@@ -15,9 +15,7 @@ export const placeOrder = async (_req: Request, res: Response) => {
     for (const item of cartItems) {
       const product = await Product.findById(item.productId);
       if (!product) {
-        return res
-          .status(400)
-          .json({ error: `Product with id ${item.productId} not found.` });
+        return res.status(400).json({ error: `Product with id ${item.productId} not found.` });
       }
       const itemTotal = item.quantity * product.price;
       totalPrice += itemTotal;

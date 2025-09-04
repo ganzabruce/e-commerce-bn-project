@@ -11,7 +11,7 @@ export const saveProduct = async (req: Request, res: Response) => {
       imageUrl,
       category,
     });
-    return res.status(201).json(newProduct);
+    return res.status(201).json({newProduct});
   } catch (error) {
     console.error("Error saving product:", error);
     return res.status(500).json({ error: "Internal server error." });
