@@ -72,7 +72,6 @@ export const updateBlog = async (req: Request, res: Response) => {
 export const deleteBlog = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-
     const deletedBlog = await Blog.findByIdAndDelete(id);
 
     if (!deletedBlog) {

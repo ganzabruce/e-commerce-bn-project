@@ -1,23 +1,32 @@
 import express from "express";
-import dotenv from "dotenv";
-import router from "./src/routes/router";
 import mongoose from "mongoose";
+import cors from "cors";
+import productRouter from "./src/routes/productRoutes";
+import cartRouter from "./src/routes/cartRoutes";
+import orderRouter from "./src/routes/orderRoutes";
 
-dotenv.config();
 const app = express();
-const PORT = 3000
-app.use(express.json())
-app.use("/api",router)
-mongoose.connect("mongodb+srv://bruce:lSvY3ij367vy8d1g@cluster0.emzrdoq.mongodb.net/blogs-db")
-  .then(()=>{
-    app.listen(PORT,()=>{
-      console.log("well connected to the database")
-      console.log(`your server is up running ${PORT}`)
-    })
-  })
-  .catch((error)=>{
-    console.log("failed to connect to the database: ",error)
-  })
-
+const port = 3000;
 app.use(express.json());
-app.use("/api", router)
+app.use(cors());
+
+app.use((req, _res, next) => {
+  console.log(`Incoming request: ${req.method} ${req.url}`);
+  next();
+});
+mongoose
+  .connect(
+    "mongodb+srv://bruce:lSvY3ij367vy8d1g@cluster0.emzrdoq.mongodb.net/e-commerce"
+  )
+  .then(() => {
+    console.log("MongoDB connected ");
+    app.listen(port, () => {
+      console.log(`Server running at http://localhost:${port}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Failed to connect MongoDB:", err.message);
+  });
+app.use("/api", productRouter);
+app.use("/api", cartRouter);
+app.use("/api", orderRouter);
