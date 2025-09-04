@@ -4,20 +4,20 @@ import cors from "cors";
 import productRouter from "./src/routes/productRoutes";
 import cartRouter from "./src/routes/cartRoutes";
 import orderRouter from "./src/routes/orderRoutes";
-
+import dotenv from "dotenv"
+dotenv.config()
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
+const uri = process.env.DB_URI;
+console.log("uri:",uri)
 app.use(express.json());
 app.use(cors());
-
 app.use((req, _res, next) => {
   console.log(`Incoming request: ${req.method} ${req.url}`);
   next();
 });
 mongoose
-  .connect(
-    "mongodb+srv://bruce:lSvY3ij367vy8d1g@cluster0.emzrdoq.mongodb.net/e-commerce"
-  )
+  .connect(String(uri))
   .then(() => {
     console.log("MongoDB connected ");
     app.listen(port, () => {
