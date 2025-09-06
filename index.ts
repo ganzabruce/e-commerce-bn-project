@@ -5,6 +5,7 @@ import productRouter from "./src/routes/productRoutes";
 import cartRouter from "./src/routes/cartRoutes";
 import orderRouter from "./src/routes/orderRoutes";
 import dotenv from "dotenv"
+import authRouter from "./src/routes/auth";
 dotenv.config()
 const app = express();
 const port = process.env.PORT;
@@ -27,7 +28,7 @@ mongoose
   .catch((err) => {
     console.error("Failed to connect MongoDB:", err.message);
   });
-app.use("/api", productRouter);
-app.use("/api", cartRouter);
-app.use("/api", orderRouter);
-app.use("/auth", orderRouter);
+app.use("/api/routes", productRouter);
+app.use("/api/routes", cartRouter);
+app.use("/api/routes", orderRouter);
+app.use("/api/auth", authRouter);
