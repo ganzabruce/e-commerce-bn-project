@@ -3,7 +3,18 @@ import Product from "../model/productModel";
 export const saveProduct = async (req: Request, res: Response) => {
   console.log(req.body);
   try {
-    const { name, price, description, imageUrl, category } = req.body;
+    const { name, price, description, imageUrl, category, quantity } = req.body;
+
+    if(!name || price == null || !description || !imageUrl || !category || quantity == null){
+      return res.status(400).json({error: "please fill all required fields"})
+    }else if(isNaN(price) || isNaN(quantity)){
+      return res.status(400).json({error: "the price and quantity field must all be numbers"})
+    }
+    
+    
+    if(price <= 0){
+      return res.status(400).json({error:"the price of product must be greater than 1"})
+    }
     const newProduct = await Product.create({
       name: name,
       price,
@@ -42,6 +53,15 @@ export const getProductById = async (req: Request, res: Response) => {
 
 export const updateProduct = async (req: Request, res: Response) => {
   try {
+    const {name, price, description, imageUrl, category , quantity} = req.body
+    if(!name || price == null || !description || !imageUrl || !category || quantity == null){
+      return res.status(400).json({error: "please fill all required fields"})
+    }else if(isNaN(price) || isNaN(quantity)){
+      return res.status(400).json({error: "the price and quantity fields must all be numbers"})
+    }
+    if(price <= 0){
+      return res.status(400).json({error:"the price of product must be greater than 1"})
+    }
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
       req.body,
