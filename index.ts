@@ -30,3 +30,4 @@ mongoose
 app.use("/api", productRouter);
 app.use("/api", cartRouter);
 app.use("/api", orderRouter);
+app.use("/auth", orderRouter);
