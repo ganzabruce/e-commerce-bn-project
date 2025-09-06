@@ -4,9 +4,19 @@ import Product from "../model/productModel";
 export const addToCart = async (req: Request, res: Response) => {
   try {
     const { productId, quantity } = req.body;
-    console.log(req.body);
+    if(!productId || quantity == null){
+      return res.status(400).json({error: "please fill all required data"})
+    }else if(isNaN(quantity)){
+      return res.status(400).json({error: "please send the quantity as a number "})
+    }else if(quantity <= 0){
+      return res.status(400).json({error:"please send the quantity of products you need as number greater that 0"})
+    }
+    
     const product = await Product.findById(productId);
     if (!product) return res.status(404).json({ error: "Product not found." });
+    if(quantity > product?.quantity){
+      return res.status(404).json({error: `the requested amount of products is greater than what we currently have in the stock, we only have ${product?.quantity} while you reqested ${quantity}`})
+    }
     let cartItem = await CartItem.findOne({ productId });
     if (cartItem) {
       cartItem.quantity += quantity;
@@ -19,7 +29,6 @@ export const addToCart = async (req: Request, res: Response) => {
       quantity,
       subtotal: quantity * product.price,
     });
-
     return res.status(201).json({newCartItem});
   } catch (error) {
     console.error("Error adding to cart:", error);
@@ -38,8 +47,19 @@ export const updateCartItem = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
     const { quantity } = req.body;
+
+    if(!productId){
+      return res.status(400).json({error: "please send the product id in params"})
+    }else if(quantity == null){
+      return res.status(400).json({error: "please provide the quantity value"})
+    }else if(isNaN(quantity)){
+      return res.status(400).json({error: "please send the quantity as a number "})
+    }else if(quantity <= 0){
+      return res.status(400).json({error:"please send the quantity of products you need as number greater that 0"})
+    }
     const product = await Product.findById(productId);
     if (!product) return res.status(404).json({ error: "Product not found." });
+
     const cartItem = await CartItem.findOne({ productId });
     if (!cartItem) return res.status(404).json({ error: "Item not in cart." });
     cartItem.quantity = quantity;
@@ -54,7 +74,7 @@ export const updateCartItem = async (req: Request, res: Response) => {
 export const removeCartItem = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
-
+    
     const deletedItem = await CartItem.findOneAndDelete({ productId });
     if (!deletedItem)
       return res.status(404).json({ error: "Item not found in cart." });
