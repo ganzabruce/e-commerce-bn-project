@@ -1,4 +1,5 @@
 import express from "express";
+import authMiddleware from "../middlewares/auth";
 import {
   saveProduct,
   getProducts,
@@ -6,8 +7,10 @@ import {
   updateProduct,
   deleteProduct,
 } from "../controllers/productController";
-
 const productRouter = express.Router();
+
+productRouter.use(authMiddleware)
+
 productRouter.post("/products", saveProduct);
 productRouter.get("/products", getProducts);
 productRouter.get("/products/:id", getProductById);

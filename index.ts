@@ -10,7 +10,6 @@ dotenv.config()
 const app = express();
 const port = process.env.PORT;
 const uri = process.env.DB_URI;
-console.log("uri:",uri)
 app.use(express.json());
 app.use(cors());
 app.use((req, _res, next) => {
