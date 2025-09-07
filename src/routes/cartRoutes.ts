@@ -7,6 +7,9 @@ import {
 } from "../controllers/cartController";
 
 const cartRouter = express.Router();
+import authMiddleware from "../middlewares/auth";
+cartRouter.use(authMiddleware)
+
 
 cartRouter.post("/cart", addToCart);
 cartRouter.get("/cart", getCart);
