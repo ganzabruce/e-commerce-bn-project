@@ -6,6 +6,7 @@ import cartRouter from "./src/routes/cartRoutes";
 import orderRouter from "./src/routes/orderRoutes";
 import dotenv from "dotenv"
 import authRouter from "./src/routes/auth";
+import swaggerRouter from "./swagger";
 dotenv.config()
 const app = express();
 const port = process.env.PORT;
@@ -31,3 +32,4 @@ app.use("/api/routes", productRouter);
 app.use("/api/routes", cartRouter);
 app.use("/api/routes", orderRouter);
 app.use("/api/auth", authRouter);
+app.use("/api-docs",swaggerRouter)
