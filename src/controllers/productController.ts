@@ -10,8 +10,6 @@ export const saveProduct = async (req: Request, res: Response) => {
     }else if(isNaN(price) || isNaN(quantity)){
       return res.status(400).json({error: "the price and quantity field must all be numbers"})
     }
-    
-    
     if(price <= 0){
       return res.status(400).json({error:"the price of product must be greater than 1"})
     }
@@ -21,11 +19,12 @@ export const saveProduct = async (req: Request, res: Response) => {
       description,
       imageUrl,
       category,
+      quantity
     });
     return res.status(201).json({newProduct});
   } catch (error) {
     console.error("Error saving product:", error);
-    return res.status(500).json({ error: "Internal server error." });
+    return res.status(500).json({ error: `Internal server error : ${error}` });
   }
 };
 

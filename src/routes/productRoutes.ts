@@ -8,10 +8,80 @@ import {
   deleteProduct,
 } from "../controllers/productController";
 const productRouter = express.Router();
-productRouter.use(authMiddleware)
+// productRouter.use(authMiddleware)
 
 
 //==================== DOCUMENTATION ==========================
+
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     ApiKeyAuth:
+ *       type: apiKey
+ *       in: header
+ *       name: x-api-key
+ *     Bearer:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ *   schemas:
+ *     Product:
+ *       type: object
+ *       required:
+ *         - name
+ *         - price
+ *         - description
+ *         - imageUrl
+ *         - category
+ *         - quantity
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: name of the product
+ *         price:
+ *           type: number
+ *           description: price of the product
+ *         description:
+ *           type: string
+ *           description: Detailed description of the product
+ *         imageUrl:
+ *           type: string
+ *           description: link of and image of the product
+ *         category:
+ *           type: string
+ *           description: category of the product
+ *         quantity:
+ *           type: number
+ *           description: qantity of the products
+ *         
+ */
+productRouter.post("/products", saveProduct);
+/**
+ * @swagger
+ * /api/routes/products:
+ *   post:
+ *     tags:
+ *       - Products
+ *     summary: Create new Product
+ *     security:
+ *       - ApiKeyAuth: []
+ *       - Bearer: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Product'
+ *     responses:
+ *       201:
+ *         description: Product created
+ *       400:
+ *         description: Validation error (missing fields or price must be > 1)
+ *       500:
+ *         description: Internal server error
+ */
+
 
 /**
  * @swagger
@@ -119,9 +189,6 @@ productRouter.use(authMiddleware)
  */
 
 
-
-
-productRouter.post("/products", saveProduct);
 productRouter.get("/products", getProducts);
 productRouter.get("/products/:id", getProductById);
 productRouter.put("/products/:id", updateProduct);
