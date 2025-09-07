@@ -5,8 +5,9 @@ import {
   getOrderById,
   cancelOrder,
 } from "../controllers/orderController";
-
+import authMiddleware from "../middlewares/auth";
 const orderRouter = express.Router();
+orderRouter.use(authMiddleware)
 
 orderRouter.post("/orders", placeOrder);
 orderRouter.get("/orders", getOrders);
