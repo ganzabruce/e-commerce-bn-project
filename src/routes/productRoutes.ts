@@ -8,7 +8,7 @@ import {
   deleteProduct,
 } from "../controllers/productController";
 const productRouter = express.Router();
-// productRouter.use(authMiddleware)
+productRouter.use(authMiddleware)
 
 
 //==================== DOCUMENTATION ==========================
