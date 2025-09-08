@@ -12,7 +12,6 @@ productRouter.use(authMiddleware)
 
 
 //==================== DOCUMENTATION ==========================
-
 /**
  * @swagger
  * components:
@@ -56,7 +55,7 @@ productRouter.use(authMiddleware)
  *           description: qantity of the products
  *         
  */
-productRouter.post("/products", saveProduct);
+
 /**
  * @swagger
  * /api/routes/products:
@@ -81,7 +80,7 @@ productRouter.post("/products", saveProduct);
  *       500:
  *         description: Internal server error
  */
-
+productRouter.post("/products", saveProduct);
 
 /**
  * @swagger
@@ -107,7 +106,13 @@ productRouter.post("/products", saveProduct);
  *                     $ref: '#/components/schemas/Product'
  *       500:
  *         description: Failed to fetch products
- *
+ */
+
+productRouter.get("/products", getProducts);
+
+/**
+ * @swagger
+ * 
  * /api/routes/products/{id}:
  *   get:
  *     tags:
@@ -134,7 +139,13 @@ productRouter.post("/products", saveProduct);
  *         description: Product not found
  *       500:
  *         description: Failed to fetch product
- *
+ */
+
+productRouter.get("/products/:id", getProductById);
+
+/** 
+ * @swagger
+ * 
  *   put:
  *     tags:
  *       - Products
@@ -164,7 +175,11 @@ productRouter.post("/products", saveProduct);
  *         description: Product not found
  *       500:
  *         description: Failed to update product
- *
+ */
+productRouter.put("/products/:id", updateProduct);
+
+/** 
+ * @swagger
  *   delete:
  *     tags:
  *       - Products
@@ -189,9 +204,9 @@ productRouter.post("/products", saveProduct);
  */
 
 
-productRouter.get("/products", getProducts);
-productRouter.get("/products/:id", getProductById);
-productRouter.put("/products/:id", updateProduct);
+
+
+
 productRouter.delete("/products/:id", deleteProduct);
 
 export default productRouter;

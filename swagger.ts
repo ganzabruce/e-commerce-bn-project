@@ -15,24 +15,6 @@ const options: swaggerJSDoc.Options = {
             version: "1.0.0",
             description: "mini e-commerce API documentation with swagger"
         },
-        tags:[
-            {
-                name:"auth",
-                description: "authentication and authorization API"
-            },
-            {
-                name: "products",
-                description: "products API"
-            },
-            {
-                name: "cart",
-                description: "cart API"
-            },
-            {
-                name: "order",
-                description: "order API"
-            }
-        ],
         servers:[
             {
                 url:`http://localhost:${port}` ,
