@@ -1,6 +1,8 @@
 import express from "express"
 import { signinUser } from "../controllers/auth/signin"
 import { signupUser } from "../controllers/auth/signup"
+import { signinAdmin } from "../controllers/admin/signin"
+import { signupAdmin } from "../controllers/admin/signup"
 
 const authRouter = express.Router()
 
@@ -127,6 +129,8 @@ const authRouter = express.Router()
 
 authRouter.post("/signup",signupUser)
 authRouter.post("/login",signinUser)
+authRouter.post("/admin/signup",signupAdmin)
+authRouter.post("/admin/login",signinAdmin)
 
 
 export default authRouter
