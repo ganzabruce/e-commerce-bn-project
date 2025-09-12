@@ -48,6 +48,8 @@ const authRouter = express.Router()
  *         email: john@example.com
  *         password: password123
  * 
+ * 
+ * 
  *     AuthResponse:
  *       type: object
  *       properties:

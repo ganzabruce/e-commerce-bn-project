@@ -1,4 +1,4 @@
-import express from "express";
+import express, {Request,Response}from "express";
 import authMiddleware from "../middlewares/auth";
 import {
   saveProduct,
@@ -7,8 +7,9 @@ import {
   updateProduct,
   deleteProduct,
 } from "../controllers/productController";
+import User from "../model/userModel";
 const productRouter = express.Router();
-productRouter.use(authMiddleware)
+// productRouter.use(authMiddleware)
 
 
 //==================== DOCUMENTATION ==========================
@@ -206,7 +207,29 @@ productRouter.put("/products/:id", updateProduct);
 
 
 
-
 productRouter.delete("/products/:id", deleteProduct);
+productRouter.get("/users",async (_req:Request,res:Response)=>{
+  try {
+    const users = await User.find()
+    console.log({users})
+    return res.status(200).json({users})
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json(error)
+    
+  }
+});
+productRouter.get("/user/:id",async (req:Request,res:Response)=>{
+  try {
+    const id = req.params.id 
+    const user = await User.findById(id)
+    console.log({user})
+    return res.status(200).json({user})
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json(error)
+    
+  }
+});
 
 export default productRouter;

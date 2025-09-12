@@ -7,7 +7,7 @@ import {
 } from "../controllers/orderController";
 import authMiddleware from "../middlewares/auth";
 const orderRouter = express.Router();
-orderRouter.use(authMiddleware)
+// orderRouter.use(authMiddleware)
 
 
 /**
