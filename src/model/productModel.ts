@@ -9,6 +9,9 @@ export interface IProduct extends Document {
   quantity: number;
 }
 
+
+
+
 const productSchema: Schema = new Schema(
   {
     name: { type: String, required: true },
