@@ -3,9 +3,10 @@ import Order from "../model/orderModel";
 import CartItem from "../model/cartModel";
 import Product from "../model/productModel";
 
-export const placeOrder = async (_req: Request, res: Response) => {
+export const placeOrder = async (req: Request, res: Response) => {
   try {
-    const cartItems = await CartItem.find();
+    const user = req.userId
+    const cartItems = await CartItem.find({createdBy:user});
 
     if (cartItems.length === 0) {
       return res.status(400).json({ error: "Cart is empty. Cannot place order." });
@@ -27,6 +28,7 @@ export const placeOrder = async (_req: Request, res: Response) => {
     const newOrder = await Order.create({
       items: orderItems,
       totalPrice,
+      orderBy:user
     });
     await CartItem.deleteMany();
 
@@ -36,9 +38,10 @@ export const placeOrder = async (_req: Request, res: Response) => {
     return res.status(500).json({ error: "Internal server error." });
   }
 };
-export const getOrders = async (_req: Request, res: Response) => {
+export const getOrders = async (req: Request, res: Response) => {
   try {
-    const orders = await Order.find().populate("items.productId");
+    const user = req.userId
+    const orders = await Order.find({orderBy:user}).populate("items.productId");
     return res.status(200).json({orders});
   } catch (error) {
     return res.status(500).json({ error: "Failed to fetch orders." });
