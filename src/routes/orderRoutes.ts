@@ -7,7 +7,7 @@ import {
 } from "../controllers/orderController";
 import authMiddleware from "../middlewares/auth";
 const orderRouter = express.Router();
-// orderRouter.use(authMiddleware)
+orderRouter.use(authMiddleware)
 
 
 /**
@@ -153,6 +153,7 @@ const orderRouter = express.Router();
  *           type: string
  *         description: Order ID
  *     responses:
+ * 
  *       200:
  *         description: Order cancelled successfully
  *       404:

@@ -2,7 +2,6 @@ import Admin from "../../model/adminModel"
 import { Request,Response } from "express"
 import bcrypt  from "bcrypt"
 import jwt from "jsonwebtoken"
-import dotenv from "dotenv"
 const secret = process.env.JWT_SECRET
 
 

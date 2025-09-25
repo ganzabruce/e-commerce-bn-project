@@ -38,6 +38,47 @@ export const getProducts = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Failed to fetch products." });
   }
 };
+export const getCategories = async (req: Request, res: Response) => {
+  try {
+    const products = await Product.find();
+
+    // Group products by category and map to frontend MainCategory shape
+    const categoryIdToCategory: Record<string, { id: string; name: string; sections: Array<{ title: string; items: Array<{ id: string; name: string; image: string }> }> }> = {};
+
+    for (const product of products) {
+      const categoryName = (product.category || "Uncategorized").toString();
+      const categoryId = categoryName
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "_")
+        .replace(/^_+|_+$/g, "");
+
+      if (!categoryIdToCategory[categoryId]) {
+        categoryIdToCategory[categoryId] = {
+          id: categoryId || "uncategorized",
+          name: categoryName,
+          sections: [
+            {
+              title: categoryName,
+              items: [],
+            },
+          ],
+        };
+      }
+
+      categoryIdToCategory[categoryId].sections[0].items.push({
+        id: String(product._id),
+        name: product.name,
+        image: product.imageUrl,
+      });
+    }
+
+    const categories = Object.values(categoryIdToCategory);
+
+    return res.status(200).json({ categories });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to fetch categories." });
+  }
+};
 
 export const getProductById = async (req: Request, res: Response) => {
   try {

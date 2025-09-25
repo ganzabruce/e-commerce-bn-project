@@ -25,6 +25,10 @@ mongoose
       console.log(`Server running at http://localhost:${port}`);
     });
   })
+
+
+  
+  
   .catch((err) => {
     console.error("Failed to connect MongoDB:", err.message);
   });

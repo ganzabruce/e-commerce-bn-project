@@ -8,8 +8,9 @@ import {
   deleteProduct,
 } from "../controllers/productController";
 import User from "../model/userModel";
+import { getCategories } from "../controllers/productController";
 const productRouter = express.Router();
-// productRouter.use(authMiddleware)
+productRouter.use(authMiddleware)
 
 
 //==================== DOCUMENTATION ==========================
@@ -110,6 +111,7 @@ productRouter.post("/products", saveProduct);
  */
 
 productRouter.get("/products", getProducts);
+productRouter.get("/categories", getCategories);
 
 /**
  * @swagger

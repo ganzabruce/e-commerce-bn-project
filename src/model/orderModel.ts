@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
+import User from "./userModel";
 
 interface OrderItem {
   productId: mongoose.Types.ObjectId;
@@ -19,6 +20,7 @@ const orderSchema: Schema = new Schema(
       },
     ],
     totalPrice: { type: Number, required: true },
+    orderBy:{ type: Schema.Types.ObjectId, ref: "User", required: true }
   },
   { timestamps: { createdAt: true, updatedAt: false } }
 );
