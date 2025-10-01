@@ -4,7 +4,7 @@ export interface ICartItem extends Document {
   productId: mongoose.Types.ObjectId;
   quantity: number;
   subtotal: number;
-  createdby:string
+  createdBy: mongoose.Types.ObjectId;
 }
 
 const cartSchema: Schema = new Schema(

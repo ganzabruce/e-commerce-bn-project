@@ -2,14 +2,18 @@ import Admin from "../../model/adminModel"
 import { Request,Response } from "express"
 import bcrypt  from "bcrypt"
 import jwt from "jsonwebtoken"
-const secret = process.env.JWT_SECRET
+import dotenv from "dotenv";
+dotenv.config();
 
+const secret = process.env.JWT_SECRET
 
 const generateToken = (id:string): string =>{
     return jwt.sign({id},String(secret),{expiresIn: "3d"})
 }
 export const signinAdmin = async (req:Request,res:Response) => {
+    console.log(secret)
     try {
+        console.log(req.body)
         const {email ,password} = req.body
         if(!email || !password){
             return res.status(400).json({error: "please send both password and email"})
