@@ -37,7 +37,8 @@ export const signinUser = async (req:Request,res:Response) => {
                 data: {
                     id: admin._id,
                     email: admin.email,
-                    token:adminToken
+                    token:adminToken,
+                    role: "admin"
                 }
             })
         } catch (error) {
@@ -76,7 +77,8 @@ export const signinUser = async (req:Request,res:Response) => {
                 id: user._id,
                 username: user.username,
                 email: user.email,
-                token:userToken
+                token:userToken,
+                role: "user"
             }
         })
     } catch (error) {
