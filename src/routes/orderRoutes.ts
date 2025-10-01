@@ -1,4 +1,5 @@
-import express from "express";
+import express,{Request,Response} from "express";
+import Order from "../model/orderModel";
 import {
   placeOrder,
   getOrders,
@@ -6,9 +7,17 @@ import {
   cancelOrder,
 } from "../controllers/orderController";
 import authMiddleware from "../middlewares/auth";
-const orderRouter = express.Router();
-orderRouter.use(authMiddleware)
 
+const orderRouter = express.Router();
+
+
+orderRouter.post("/orders", placeOrder);
+orderRouter.get("/orders/:id", getOrderById);
+orderRouter.delete("/orders/:id", cancelOrder);
+
+
+
+orderRouter.use(authMiddleware)
 
 /**
  * @swagger
@@ -160,11 +169,9 @@ orderRouter.use(authMiddleware)
  *         description: Order not found
  *       500:
  *         description: Failed to cancel order
- */
+*/
 
-orderRouter.post("/orders", placeOrder);
+
 orderRouter.get("/orders", getOrders);
-orderRouter.get("/orders/:id", getOrderById);
-orderRouter.delete("/orders/:id", cancelOrder);
 
 export default orderRouter;

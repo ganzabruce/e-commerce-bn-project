@@ -2,7 +2,8 @@ import User from "../../model/userModel"
 import { Request,Response } from "express"
 import bcrypt  from "bcrypt"
 import jwt from "jsonwebtoken"
-import dotenv from "dotenv"
+import dotenv from "dotenv";
+dotenv.config();
 const secret = process.env.JWT_SECRET
 
 
@@ -13,15 +14,18 @@ export const signinUser = async (req:Request,res:Response) => {
     try {
         const {email ,password} = req.body
         if(!email || !password){
-            return res.status(400).json({error: "please send both password and email"})
+            console.log("please send both password and email")
+            throw Error("please send both password and email")
         }
         const user = await User.findOne({email})
         if(!user){
+            console.log("user email not found , please signup first")
             return res.status(404).json({error: "user email not found , please signup first"})
         }
         const isMatched = await bcrypt.compare(password, user.password)
         if(!isMatched){
-            return res.status(500).json({error: "incorrect password"})
+            console.log("incorrect")
+            throw Error("incorrect password")
         }
         const userToken = generateToken(String(user._id))
         console.log("logged in a user")
@@ -36,6 +40,6 @@ export const signinUser = async (req:Request,res:Response) => {
         })
     } catch (error) {
         console.log("error signing in a user : ",error)
-        return res.status(500).json({error: `error signing in a user : ${error}`})
+        return res.status(500).json({error: `${error}`})
     }
 }

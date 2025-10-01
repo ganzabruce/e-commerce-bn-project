@@ -10,7 +10,24 @@ import {
 import User from "../model/userModel";
 import { getCategories } from "../controllers/productController";
 const productRouter = express.Router();
+productRouter.get("/products", getProducts);
+productRouter.get("/categories", getCategories);
+productRouter.get("/products/:id", getProductById);
+productRouter.get("/users",async (_req:Request,res:Response)=>{
+  try {
+    const users = await User.find()
+    console.log({users})
+    return res.status(200).json({users})
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json(error)
+    
+  }
+});
+
 productRouter.use(authMiddleware)
+
+productRouter.delete("/products/:id", deleteProduct);
 
 
 //==================== DOCUMENTATION ==========================
@@ -110,8 +127,7 @@ productRouter.post("/products", saveProduct);
  *         description: Failed to fetch products
  */
 
-productRouter.get("/products", getProducts);
-productRouter.get("/categories", getCategories);
+
 
 /**
  * @swagger
@@ -144,7 +160,6 @@ productRouter.get("/categories", getCategories);
  *         description: Failed to fetch product
  */
 
-productRouter.get("/products/:id", getProductById);
 
 /** 
  * @swagger
@@ -209,18 +224,8 @@ productRouter.put("/products/:id", updateProduct);
 
 
 
-productRouter.delete("/products/:id", deleteProduct);
-productRouter.get("/users",async (_req:Request,res:Response)=>{
-  try {
-    const users = await User.find()
-    console.log({users})
-    return res.status(200).json({users})
-  } catch (error) {
-    console.log(error)
-    return res.status(500).json(error)
-    
-  }
-});
+
+
 productRouter.get("/user/:id",async (req:Request,res:Response)=>{
   try {
     const id = req.params.id 
