@@ -13,10 +13,11 @@ const generateToken = (id:string): string =>{
 export const signupUser = async (req:Request,res:Response) =>{
     try {
         const { username, email, password } = req.body ;
+        const newEmail = email.toLowerCase()
         if(!username || !email || !password){
             return res.status(400).json({error: "please fill all required fields"})
         }
-        if (!validator.isEmail(email)) {
+        if (!validator.isEmail(newEmail)) {
             return res.status(400).json({error:'Email not valid'})
         }
         const usernameExists = await User.findOne({username})
@@ -24,12 +25,12 @@ export const signupUser = async (req:Request,res:Response) =>{
             console.log("alredy exists")
             return res.status(400).json({error: "that username already exists please use another username"})
         }
-        const emailExists = await User.findOne({ email });
+        const emailExists = await User.findOne({ email:newEmail });
         if (emailExists) {
             return res.status(400).json({ error: "That email is already registered" });
         }
         const hashedPassword = await bcrypt.hash(password,10)
-        const signedUpUser = await User.create({username,email,password:hashedPassword})
+        const signedUpUser = await User.create({username,email:newEmail,password:hashedPassword})
         const userToken = generateToken(String(signedUpUser._id))
         console.log("signed up a user")
         return res.status(201).json({message: "created user successfull", data: {id:signedUpUser._id,username:signedUpUser.username,email:signedUpUser.email,token: userToken}})
