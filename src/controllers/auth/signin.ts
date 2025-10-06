@@ -12,17 +12,18 @@ const generateToken = (id:string): string =>{
     return jwt.sign({id},String(secret),{expiresIn: "3d"})
 }
 export const signinUser = async (req:Request,res:Response) => {
-    const {email ,password} = req.body
     console.log(req.body)
-    const admin = await Admin.findOne({email})
+    const {email ,password} = req.body
+    const newEmail = email.toLowerCase()
+    const admin = await Admin.findOne({email:newEmail})
     if(admin){
         console.log("hello ", email)
         try {
-            const {email ,password} = req.body
-            if(!email || !password){
+
+            if(!newEmail || !password){
                 return res.status(400).json({error: "please send both password and email"})
             }
-            const admin = await Admin.findOne({email})
+            const admin = await Admin.findOne({email:newEmail})
             if(!admin){
                 return res.status(404).json({error: "admin email not found , please signup first"})
             }
@@ -55,11 +56,11 @@ export const signinUser = async (req:Request,res:Response) => {
 ///////////////////////////////////////////////////////////////
     try {
         
-        if(!email || !password){
+        if(!newEmail || !password){
             console.log("please send both password and email")
             throw Error("please send both password and email")
         }
-        const user = await User.findOne({email})
+        const user = await User.findOne({email:newEmail})
         if(!user){
             console.log("user email not found , please signup first")
             return res.status(404).json({error: "user email not found , please signup first"})
